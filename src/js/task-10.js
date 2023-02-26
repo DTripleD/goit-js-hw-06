@@ -5,47 +5,55 @@ function getRandomHexColor() {
 }
 
 const mainDiv = document.querySelector("#boxes");
+const createButton = document.querySelector("button[data-create]");
+const destroyButton = document.querySelector("button[data-destroy]");
+const inputEl = document.querySelector('[type="number"]');
 
-function createBoxes(amount){
+mainDiv.style.display = "flex";
+mainDiv.style.flexWrap = "wrap";
+mainDiv.style.alignItems = "center";
+mainDiv.style.justifyContent = "center";
 
-  let widthSize = 30;
-  let heightSize = 30;
+function createBoxes(amount) {
+  if (
+    inputEl.value === "" ||
+    Number(inputEl.value) > 100 ||
+    Number(inputEl.value) === 0
+  ) {
+    alert("Enter a number from 1 to 100");
+    return;
+  }
+
+  let size = 30;
+  const boxArray = [];
 
   for (let i = 0; i < amount; i += 1) {
-    const divCreator = document.createElement("div");
-    divCreator.style.height = `${heightSize}px`;
-    divCreator.style.width = `${widthSize}px`;
-    divCreator.style.backgroundColor = `${getRandomHexColor()}`;
-    widthSize += 10;
-    heightSize += 10;
-    mainDiv.append(divCreator);
-
+    const div = `<div style = "margin: 20px; background-color: ${getRandomHexColor()}; height: ${size}px; width: ${size}px;"></div>`;
+    boxArray.push(div);
+    size += 10;
   }
+
+  mainDiv.insertAdjacentHTML("beforeend", boxArray.join(""));
 }
 
-const createButton = document.querySelector("[data-create]");
-const destroyButton = document.querySelector("[data-destroy]");
-const inputEl = document.querySelector("[type=number]");
+function destroyBoxes() {
+  inputEl.value = "";
+  mainDiv.innerHTML = "";
+}
 
-console.log(inputEl.value);
+createButton.addEventListener("click", () => {
+  createBoxes(inputEl.value);
+});
+destroyButton.addEventListener("click", destroyBoxes);
 
-// createButton.addEventListener("click", createBoxes(inputEl.value));
+document.addEventListener("keydown", (event) => {
+  if (event.code === "Enter") {
+    createBoxes(inputEl.value);
+  }
+});
 
-
-// createBtnEl.addEventListener('click', () => {
-//   //console.log(inputNumberEl.value);
-//   if (
-//     Number(inputNumberEl.value.trim()) > Number(inputNumberEl.max) ||
-//     Number(inputNumberEl.value.trim()) < Number(inputNumberEl.min)
-//   ) {
-//     alert('Please enter number from 1 to 100');
-//   } else {
-//     createBoxes(inputNumberEl.value.trim());
-//   }
-//   inputNumberEl.value = '';
-// });
-
-// destroyBtnEl.addEventListener('click', destroyBoxes);
-
-
-
+document.addEventListener("keydown", (event) => {
+  if (event.code === "Backspace") {
+    destroyBoxes();
+  }
+});
