@@ -25,15 +25,12 @@ function createBoxes(amount) {
   }
 
   let size = 30;
-  const boxArray = [];
 
   for (let i = 0; i < amount; i += 1) {
     const div = `<div style = "margin: 20px; background-color: ${getRandomHexColor()}; height: ${size}px; width: ${size}px;"></div>`;
-    boxArray.push(div);
     size += 10;
+    mainDiv.insertAdjacentHTML("beforeend", div);
   }
-
-  mainDiv.insertAdjacentHTML("beforeend", boxArray.join(""));
 }
 
 function destroyBoxes() {
@@ -44,6 +41,7 @@ function destroyBoxes() {
 createButton.addEventListener("click", () => {
   createBoxes(inputEl.value);
 });
+
 destroyButton.addEventListener("click", destroyBoxes);
 
 document.addEventListener("keydown", (event) => {
